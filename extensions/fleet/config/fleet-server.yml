@@ -1,0 +1,23 @@
+ssl.certificate_authorities: /certs/ca/ca.crt
+certificate_authorities: /certs/ca/ca.crt
+
+fleet:
+  ca: /certs/ca/ca.crt
+  enroll: true
+  insecure: true
+  url: https://fleet-server:8220
+
+fleet.server:
+  elasticsearch.ca: /certs/ca/ca.crt
+  elasticsearch.insecure: true
+  enable: true
+  certificate: /certs/fleet-server/fleet-server.crt
+  certificate_key: /certs/fleet-server/fleet-server.key
+  insecure_http: true
+  policy_id: fleet-server-policy
+
+kibana:
+  fleet:
+    ca: /certs/ca/ca.crt
+    setup: true
+    username: elastic

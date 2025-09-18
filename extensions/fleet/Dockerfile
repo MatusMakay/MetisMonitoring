@@ -1,0 +1,3 @@
+ARG ELASTIC_VERSION
+
+FROM elastic/elastic-agent:${ELASTIC_VERSION}

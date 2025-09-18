@@ -1,0 +1,11 @@
+networks:
+  siem-ng:
+    external: true
+
+services:
+  setup:
+    build:
+      context: .
+    env_file: .env
+    networks:
+      - siem-ng

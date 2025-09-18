@@ -1,0 +1,6 @@
+.env
+KibanaPut.json
+**/**/.zed
+**/**/.ropeproject
+**/**/__pycache__
+**/**/venv

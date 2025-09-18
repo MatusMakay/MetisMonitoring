@@ -1,0 +1,161 @@
+# elastic:
+#   apm:
+#     active: true
+#     serverUrl: "http://fleet-server:8200"
+#     secretToken: ${ELASTIC_APM_SECRET_TOKEN}
+
+xpack.fleet.agents.fleet_server.hosts: ["https://fleet-server:8220"]
+xpack.fleet.outputs:
+  - id: fleet-default-output
+    name: default
+    type: elasticsearch
+    hosts: [https://es01:9200]
+    is_default: true
+    is_default_monitoring: true
+    # This was hacked by beautifull mind
+    # It is not in documentation i just anticipated to work so meaby will break in the future
+    # But now it provides beautifull automatisation of deploying fleet server :*
+    ssl:
+      certificate_authorities: ["/certs/ca/ca.crt"]
+    # performance tuning preset values optimized for latency
+    # values retrieved from https://www.elastic.co/guide/en/fleet/8.14/es-output-settings.html#es-output-settings-performance-tuning-settings
+    config:
+      bulk_max_size: 50
+      worker: 1
+      queue.mem.events: 4100
+      queue.mem.flush.min_events: 2050
+      queue.mem.flush.timeout: 1s
+      compression_level: 1
+      connection_idle_timeout: 60
+    preset: latency
+
+server.host: "0.0.0.0"
+telemetry.enabled: "true"
+xpack.fleet.packages:
+  - name: fleet_server
+    version: latest
+  - name: system
+    version: latest
+  - name: elastic_agent
+    version: latest
+  - name: sysmon_linux
+    version: latest
+  - name: windows
+    version: latest
+xpack.fleet.agentPolicies:
+  - name: Fleet-Server-Policy
+    id: fleet-server-policy
+    namespace: default
+    # monitoring_enabled:
+    #   - logs
+    #   - metrics
+    package_policies:
+      - name: fleet_server-1
+        package:
+          name: fleet_server
+      # - name: system-1
+      #   package:
+      #     name: system
+      - name: elastic_agent-1
+        package:
+          name: elastic_agent
+  - name: Sysmon-Linux-Policy
+    id: sysmon-linux-policy
+    namespace: default
+    package_policies:
+      - name: sysmon_linux-1
+        package:
+          name: sysmon_linux
+  - name: Windows-Policy
+    id: windows-policy
+    namespace: default
+    package_policies:
+      - name: windows-1
+        package:
+          name: windows
+        # inputs:
+        #   - type: windows-winlog
+        #     enabled: true
+        #     streams:
+        #       - data_stream.dataset: windows.sysmon_operational
+        #         enabled: true
+        #         vars:
+        #           - preserve_original_event: true
+
+        # - ignore_older:
+        #   value: 72h
+        # - language:
+        #   value: 0
+        # - tags:
+        #   value: []
+        # - processors:
+        #     - translate_sid:
+        #         field: winlog.event_data.MemberSid
+        #         account_name_target: winlog.event_data._MemberUserName
+        #         domain_target: winlog.event_data._MemberDomain
+        #         account_type_target: winlog.event_data._MemberAccountType
+        #         ignore_missing: true
+        #         ignore_failure: true
+        # - data_stream.dataset: windows.powershell
+        #   enabled: true
+        #   vars:
+        #     preserve_original_event:
+        #       value: false
+        #     event_id:
+        #       value: "400, 403, 600, 800"
+        #     ignore_older:
+        #       value: 72h
+        #     language:
+        #       value: 0
+        #     tags:
+        #       value: []
+        #     custom:
+        #       value: |
+        #         # Winlog configuration example
+        #         #batch_read_size: 100
+
+        # - data_stream.dataset: windows.powershell_operational
+        #   enabled: true
+        #   vars:
+        #     - preserve_original_event:
+        #       value: false
+        #     - event_id:
+        #       value: "4103, 4104, 4105, 4106"
+        #     - ignore_older:
+        #       value: 72h
+        #     - language:
+        #       value: 0
+        #     - tags:
+        #       value: []
+        #     - custom:
+        #       value: |
+        #         # Winlog configuration example
+        #         #batch_read_size: 100
+
+  # - name: Windows-Policy
+  #   id: windows-policy
+  #   namespace: default
+  #   package_policies:
+  #     - name: windows-1
+  #       package:
+  #         name: windows
+  #       inputs:
+  #         - type: winlog
+  #           enabled: true
+  #           streams:
+  #             - data_stream.dataset: windows.sysmon_operational
+  #               enabled: true
+  # - name: Windows-Policy
+  #   id: windows-policy
+  #   namespace: default
+  #   package_policies:
+  #     - name: windows-1
+  #       package:
+  #         name: windows
+  #       inputs:
+  #         - type: system-winlog
+  #           enabled: true
+  #           streams:
+  #             - data_stream.dataset: sysmon_operational
+  #               preserve_original_event: false
+  #               ignore_older: 72h

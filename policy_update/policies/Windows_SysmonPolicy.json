@@ -1,0 +1,135 @@
+{
+  "package": {
+    "name": "windows",
+    "version": "3.1.2"
+  },
+  "name": "windows-1",
+  "namespace": "default",
+  "policy_ids": ["windows-policy"],
+  "vars": {},
+  "inputs": {
+    "windows-winlog": {
+      "enabled": true,
+      "streams": {
+        "windows.applocker_exe_and_dll": {
+          "enabled": false,
+          "vars": {
+            "preserve_original_event": false,
+            "event_id": null,
+            "ignore_older": "72h",
+            "language": 0,
+            "tags": [],
+            "custom": "# Winlog configuration example\n#batch_read_size: 100"
+          }
+        },
+        "windows.applocker_msi_and_script": {
+          "enabled": false,
+          "vars": {
+            "preserve_original_event": false,
+            "event_id": null,
+            "ignore_older": "72h",
+            "language": 0,
+            "tags": [],
+            "custom": "# Winlog configuration example\n#batch_read_size: 100"
+          }
+        },
+        "windows.applocker_packaged_app_deployment": {
+          "enabled": false,
+          "vars": {
+            "preserve_original_event": false,
+            "event_id": null,
+            "ignore_older": "72h",
+            "language": 0,
+            "tags": [],
+            "custom": "# Winlog configuration example\n#batch_read_size: 100"
+          }
+        },
+        "windows.applocker_packaged_app_execution": {
+          "enabled": false,
+          "vars": {
+            "preserve_original_event": false,
+            "event_id": null,
+            "ignore_older": "72h",
+            "language": 0,
+            "tags": [],
+            "custom": "# Winlog configuration example\n#batch_read_size: 100"
+          }
+        },
+        "windows.forwarded": {
+          "enabled": true,
+          "vars": {
+            "preserve_original_event": false,
+            "ignore_older": "72h",
+            "language": 0,
+            "tags": ["forwarded"],
+            "custom": "# Winlog configuration example\n#batch_read_size: 100"
+          }
+        },
+        "windows.powershell": {
+          "enabled": true,
+          "vars": {
+            "preserve_original_event": false,
+            "event_id": "400, 403, 600, 800",
+            "ignore_older": "72h",
+            "language": 0,
+            "tags": [],
+            "custom": "# Winlog configuration example\n#batch_read_size: 100"
+          }
+        },
+        "windows.powershell_operational": {
+          "enabled": true,
+          "vars": {
+            "preserve_original_event": false,
+            "event_id": "4103, 4104, 4105, 4106",
+            "ignore_older": "72h",
+            "language": 0,
+            "tags": [],
+            "custom": "# Winlog configuration example\n#batch_read_size: 100"
+          }
+        },
+        "windows.sysmon_operational": {
+          "enabled": true,
+          "vars": {
+            "preserve_original_event": false,
+            "ignore_older": "72h",
+            "language": 0,
+            "tags": [],
+            "custom": "# Winlog configuration example\n#batch_read_size: 100"
+          }
+        },
+        "windows.windows_defender": {
+          "enabled": false,
+          "vars": {
+            "preserve_original_event": false,
+            "event_id": null,
+            "ignore_older": "72h",
+            "language": 0,
+            "tags": [],
+            "custom": "# Winlog configuration example\n#batch_read_size: 100"
+          }
+        }
+      }
+    },
+    "windows-windows/metrics": {
+      "enabled": false,
+      "streams": {
+        "windows.perfmon": {
+          "enabled": false,
+          "vars": {
+            "perfmon.group_measurements_by_instance": false,
+            "perfmon.ignore_non_existent_counters": false,
+            "perfmon.refresh_wildcard_counters": false,
+            "perfmon.queries": "- object: 'Process'\n  instance: [\"*\"]\n  counters:\n   - name: '% Processor Time'\n     field: cpu_perc\n     format: \"float\"\n   - name: \"Working Set\"\n",
+            "period": "10s"
+          }
+        },
+        "windows.service": {
+          "enabled": false,
+          "vars": {
+            "period": "60s"
+          }
+        }
+      }
+    }
+  }
+}
