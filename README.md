@@ -16,10 +16,8 @@ docker cp es01:/usr/share/elasticsearch/config/certs/ca/ca.crt /tmp/.
 openssl x509 -in /tmp/ca.crt -noout -fingerprint -sha256 | cut -d "=" -f 2 | sed 's/://g'
 ```
 
-## Automatizacia pomocou REST API
-- pri editovani konfiguracie agenta si vies zobrazit ako bude presne vyzerat PUT request
-- v pripade potreby vytvorim python skript na automatizaciu konfiguracie
-
+## Todo
+- [ ] Dynamicky nacitat konfiguracie z priecinka ale asi overkill 
 
 
 ## Resources:
