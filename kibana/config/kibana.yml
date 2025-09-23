@@ -1,9 +1,3 @@
-# elastic:
-#   apm:
-#     active: true
-#     serverUrl: "http://fleet-server:8200"
-#     secretToken: ${ELASTIC_APM_SECRET_TOKEN}
-
 xpack.fleet.agents.fleet_server.hosts: ["https://fleet-server:8220"]
 xpack.fleet.outputs:
   - id: fleet-default-output
@@ -28,6 +22,10 @@ xpack.fleet.outputs:
       compression_level: 1
       connection_idle_timeout: 60
     preset: latency
+
+xpack.encryptedSavedObjects.encryptionKey: ${SAVED_OBJECT_ENCRYPTION_KEY}
+xpack.reporting.encryptionKey: ${REPORTING_ENCRYPTIONKEY}
+xpack.security.encryptionKey: ${SECURITY_ENCRYPTIONKEY}
 
 server.host: "0.0.0.0"
 telemetry.enabled: "true"
@@ -73,89 +71,3 @@ xpack.fleet.agentPolicies:
       - name: windows-1
         package:
           name: windows
-        # inputs:
-        #   - type: windows-winlog
-        #     enabled: true
-        #     streams:
-        #       - data_stream.dataset: windows.sysmon_operational
-        #         enabled: true
-        #         vars:
-        #           - preserve_original_event: true
-
-        # - ignore_older:
-        #   value: 72h
-        # - language:
-        #   value: 0
-        # - tags:
-        #   value: []
-        # - processors:
-        #     - translate_sid:
-        #         field: winlog.event_data.MemberSid
-        #         account_name_target: winlog.event_data._MemberUserName
-        #         domain_target: winlog.event_data._MemberDomain
-        #         account_type_target: winlog.event_data._MemberAccountType
-        #         ignore_missing: true
-        #         ignore_failure: true
-        # - data_stream.dataset: windows.powershell
-        #   enabled: true
-        #   vars:
-        #     preserve_original_event:
-        #       value: false
-        #     event_id:
-        #       value: "400, 403, 600, 800"
-        #     ignore_older:
-        #       value: 72h
-        #     language:
-        #       value: 0
-        #     tags:
-        #       value: []
-        #     custom:
-        #       value: |
-        #         # Winlog configuration example
-        #         #batch_read_size: 100
-
-        # - data_stream.dataset: windows.powershell_operational
-        #   enabled: true
-        #   vars:
-        #     - preserve_original_event:
-        #       value: false
-        #     - event_id:
-        #       value: "4103, 4104, 4105, 4106"
-        #     - ignore_older:
-        #       value: 72h
-        #     - language:
-        #       value: 0
-        #     - tags:
-        #       value: []
-        #     - custom:
-        #       value: |
-        #         # Winlog configuration example
-        #         #batch_read_size: 100
-
-  # - name: Windows-Policy
-  #   id: windows-policy
-  #   namespace: default
-  #   package_policies:
-  #     - name: windows-1
-  #       package:
-  #         name: windows
-  #       inputs:
-  #         - type: winlog
-  #           enabled: true
-  #           streams:
-  #             - data_stream.dataset: windows.sysmon_operational
-  #               enabled: true
-  # - name: Windows-Policy
-  #   id: windows-policy
-  #   namespace: default
-  #   package_policies:
-  #     - name: windows-1
-  #       package:
-  #         name: windows
-  #       inputs:
-  #         - type: system-winlog
-  #           enabled: true
-  #           streams:
-  #             - data_stream.dataset: sysmon_operational
-  #               preserve_original_event: false
-  #               ignore_older: 72h
