@@ -17,7 +17,7 @@ openssl x509 -in /tmp/ca.crt -noout -fingerprint -sha256 | cut -d "=" -f 2 | sed
 ```
 
 ## Todo
-- [ ] Dynamicky nacitat konfiguracie z priecinka ale asi overkill 
+- [ ] Dynamicky nacitat konfiguracie z priecinka ale asi overkill
 
 
 ## Resources:
@@ -46,3 +46,7 @@ Fleet-Managed: https://www.elastic.co/guide/en/fleet/8.8/install-fleet-managed-e
 
 Queue Full Error:
 https://www.elastic.co/guide/en/apm/server/current/common-problems.html#queue-full
+
+# Zdroj
+
+https://github.com/evermight/elastic-stack-docker-part-two
