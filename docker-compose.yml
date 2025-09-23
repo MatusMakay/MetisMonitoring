@@ -40,13 +40,9 @@ services:
     depends_on:
       setup:
         condition: service_healthy
-    # label when collecting logs from docker container
-    # labels:
-    #   co.elastic.logs/module: elasticsearch
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
       - esdata01:/usr/share/elasticsearch/data
-      # - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
     ports:
       - ${ES_PORT}:9200
     environment:
@@ -67,6 +63,7 @@ services:
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
     mem_limit: ${ES_MEM_LIMIT}
+    env_file: .env
     ulimits:
       memlock:
         soft: -1
@@ -75,7 +72,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+          "curl -s --cacert config/certs/ca/ca.crt ${ELASTIC_SERVER_HOST} | grep -q 'missing authentication credentials'",
         ]
       interval: 10s
       retries: 120
@@ -93,9 +90,6 @@ services:
         condition: service_healthy
       setup:
         condition: service_healthy
-    # label when collecting logs from docker container
-    # labels:
-    #   co.elastic.logs/module: kibana
     volumes:
       - certs:/usr/share/kibana/config/certs
       - kibanadata:/usr/share/kibana/data
@@ -111,43 +105,41 @@ services:
       - XPACK_SECURITY_ENCRYPTIONKEY=${ENCRYPTION_KEY}
       - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
       - XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
-      - XPACK_REPORTING_KIBANASERVER_HOSTNAME=localhost
+      - XPACK_REPORTING_KIBANASERVER_HOSTNAME=kibana
       - SERVER_SSL_ENABLED=true
       - SERVER_SSL_CERTIFICATE=config/certs/kibana/kibana.crt
       - SERVER_SSL_KEY=config/certs/kibana/kibana.key
       - SERVER_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
     mem_limit: ${KB_MEM_LIMIT}
-    # healthcheck:
-    #   test:
-    #     [
-    #       "CMD-SHELL",
-    #       "curl -I -s --cacert config/certs/ca/ca.crt https://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
-    #     ]
-    #   interval: 10s
-    #   timeout: 10s
-    #   retries: 120
+    env_file: .env
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -I -s --cacert config/certs/ca/ca.crt ${KIBANA_SERVER_HOST} | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
     networks:
       - siem-ng
-
-  logstash01:
-    build:
-      context: kibana
-      args:
-        ELASTIC_VERSION: ${STACK_VERSION}
-    depends_on:
-      es01:
-        condition: service_healthy
-      # kibana:
-      #   condition: service_healthy
-    # label for docker container
-    # labels:
-    #   co.elastic.logs/module: logstash
-    user: root
-    volumes:
-      - certs:/usr/share/logstash/certs
-      - logstashdata01:/usr/share/logstash/data
-      - "./logstash/pipeline.conf:/usr/share/logstash/pipeline/logstash.conf:ro"
-    environment:
-      - ELASTIC_USER=elastic
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-      - ELASTIC_HOSTS=https://es01:9200
+  # Enable when someone will need id. Needs to configure pipeline.conf
+  # logstash01:
+  #   build:
+  #     context: kibana
+  #     args:
+  #       ELASTIC_VERSION: ${STACK_VERSION}
+  #   depends_on:
+  #     es01:
+  #       condition: service_healthy
+  #     kibana:
+  #       condition: service_healthy
+  #   user: root
+  #   volumes:
+  #     - certs:/usr/share/logstash/certs
+  #     - logstashdata01:/usr/share/logstash/data
+  #     - "./logstash/pipeline.conf:/usr/share/logstash/pipeline/logstash.conf:ro"
+  #   environment:
+  #     - ELASTIC_USER=${ELASTIC_USERNAME}
+  #     - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+  #     - ELASTIC_HOSTS=${ELASTIC_SERVER_HOST}

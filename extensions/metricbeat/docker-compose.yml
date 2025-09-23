@@ -10,11 +10,11 @@ volumes:
 
 services:
   metricbeat01:
-    depends_on:
-      es01:
-        condition: service_healthy
-      kibana:
-        condition: service_healthy
+    # depends_on:
+    #   es01:
+    #     condition: service_healthy
+    #   kibana:
+    #     condition: service_healthy
     image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
     user: root
     volumes:
