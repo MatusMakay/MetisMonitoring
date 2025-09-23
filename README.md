@@ -1,16 +1,20 @@
 # Getting started with the Elastic Stack and Docker Compose: Part 2
-## Elastic Agent, Fleet, and Elastic APM
+# Elastic Agent, Fleet, and Elastic APM
 ## Setup
+
 ``` bash
 docker volume create certs
 docker network create siem-ng
 ```
+
 ## Remove everything when docker compose down
+
 ``` bash
 docker-compose down --remove-orphans --volumes
 ```
 
 ## Steps need to fix fleet server
+
 ``` bash
 docker cp es01:/usr/share/elasticsearch/config/certs/ca/ca.crt /tmp/.
 openssl x509 -in /tmp/ca.crt -noout -fingerprint -sha256 | cut -d "=" -f 2 | sed 's/://g'
@@ -18,7 +22,6 @@ openssl x509 -in /tmp/ca.crt -noout -fingerprint -sha256 | cut -d "=" -f 2 | sed
 
 ## Todo
 - [ ] Dynamicky nacitat konfiguracie z priecinka ale asi overkill
-
 
 ## Resources:
 ### Fleet/Agent
