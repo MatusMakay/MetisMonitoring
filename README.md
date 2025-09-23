@@ -20,6 +20,11 @@ docker cp es01:/usr/share/elasticsearch/config/certs/ca/ca.crt /tmp/.
 openssl x509 -in /tmp/ca.crt -noout -fingerprint -sha256 | cut -d "=" -f 2 | sed 's/://g'
 ```
 
+- generate keys for kibana security
+``` bash
+docker exec -it kibana bin/kibana-encryption-keys generate
+```
+
 ## Todo
 - [ ] Dynamicky nacitat konfiguracie z priecinka ale asi overkill
 
