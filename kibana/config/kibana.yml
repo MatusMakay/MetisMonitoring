@@ -9,6 +9,7 @@ xpack.fleet.outputs:
     # This was hacked by beautifull mind
     # It is not in documentation i just anticipated to work so meaby will break in the future
     # But now it provides beautifull automatisation of deploying fleet server :*
+    # When it breaks just follow instructions in the README.md file
     ssl:
       certificate_authorities: ["/certs/ca/ca.crt"]
     # performance tuning preset values optimized for latency
