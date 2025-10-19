@@ -1,17 +1,44 @@
-xpack.fleet.agents.fleet_server.hosts: ["https://fleet-server:8220"]
+xpack.fleet.agents.fleet_server.hosts:
+  [
+    "https://fleet-server:8220",
+    "https://siem-ng.fiitacademy.fiit.stuba.sk:8220",
+  ]
 xpack.fleet.outputs:
   - id: fleet-default-output
     name: default
     type: elasticsearch
-    hosts: [https://es01:9200]
+    hosts: [https://es01:9200, https://siem-ng.fiitacademy.fiit.stuba.sk:9200]
     is_default: true
     is_default_monitoring: true
     # This was hacked by beautifull mind
     # It is not in documentation i just anticipated to work so meaby will break in the future
     # But now it provides beautifull automatisation of deploying fleet server :*
-    # When it breaks just follow instructions in the README.md file
+    # it worked only for docker environment when agents were deployed on hosts it results in error /etc/ca/cert.crt not found
+    # certificate_authorities: ["/certs/ca/ca.crt"] use only when running in one docker machine
+    # this certificate have to be changed based on deployment after the keys are generated run command in readme and paste the content of certificate here
     ssl:
-      certificate_authorities: ["/certs/ca/ca.crt"]
+      certificate_authorities:
+        - |
+          -----BEGIN CERTIFICATE-----
+          MIIDWjCCAkKgAwIBAgIVAPp+V63ctEgFvIkOMFWfLOIEZUZEMA0GCSqGSIb3DQEB
+          CwUAMDQxMjAwBgNVBAMTKUVsYXN0aWMgQ2VydGlmaWNhdGUgVG9vbCBBdXRvZ2Vu
+          ZXJhdGVkIENBMB4XDTI1MTAxOTE1MDEyOVoXDTI4MTAxODE1MDEyOVowNDEyMDAG
+          A1UEAxMpRWxhc3RpYyBDZXJ0aWZpY2F0ZSBUb29sIEF1dG9nZW5lcmF0ZWQgQ0Ew
+          ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDhdoh7Q6vQrJH9uM6fJVZ8
+          I6ihCVcGEA6u4LhNXi44DngrHsuUs18FpmkRe2GLQDyaWRQZC4xyuLvGfomKwnNw
+          IU/vol+q2skgAc9/Zwv8XyNHlBF0YWsv59yw0jwwowUWrt6mNee+i63CvV87Fjn7
+          sry1z7l+BzpseGV08oVCxypjWbiV1TK1GomqK5yLwJgglEFJWIWjzNqAN5PMNUuO
+          l+csvGmRw2Y/+HOQ7ro8wdH2olF2n/c4KQgBvOZ4P+U4YtzzZvc51sLvYOsAKQaM
+          S+TKnuA45OyP2Tuj+2Uyv4Pr2QrZ+p1yYxfgYxACe0U1Q8/U0kYfJt+2rjuYd7dp
+          AgMBAAGjYzBhMB0GA1UdDgQWBBSZmt4DwyEv3M8rU5i5g08KCfT6mDAfBgNVHSME
+          GDAWgBSZmt4DwyEv3M8rU5i5g08KCfT6mDAPBgNVHRMBAf8EBTADAQH/MA4GA1Ud
+          DwEB/wQEAwIBBjANBgkqhkiG9w0BAQsFAAOCAQEAoppF0gjgU9cC0GM62wvGGJh3
+          ZS3e1CAO3zHL6pMTv3jqGozzGMVvJ7v3K/1YvArystFybbevn5jDoe0oshCpVm4J
+          8h0ftDB/Xocww0SeMVs+gLNDDo5qE+qySDCXI53eGhRjIDdbU4yaqQQDpPwlWDsV
+          0IT1BQ2lhwzJ7qGSCEsj/jZlH8ek+jggt97V6CgY/bejedJQ0CXkYV+Y053ZWoiG
+          cTPGs1HkfkBIWjpbkzuN4MAj/5576Qm6sFJKlt54oazs1c21S9/Hicv6AZaM+MG2
+          ksror03k6mFQpiTCIIHjsptt7CymoF1i7vcaTiv0w1J5D/vsegbqV/xG+ordKA==
+          -----END CERTIFICATE-----
     # performance tuning preset values optimized for latency
     # values retrieved from https://www.elastic.co/guide/en/fleet/8.14/es-output-settings.html#es-output-settings-performance-tuning-settings
     config:
