@@ -39,23 +39,23 @@ instances:
     dns:
       - es01
       - localhost
-      - siem-ng.fiitacademy.fiit.stuba.sk
+      - ${ELK_PRODUCTION_DOMAIN}
     ip:
-      - 10.0.130.2
+      - ${ELK_PRODUCTION_IP}
   - name: kibana
     dns:
       - kibana
       - localhost
-      - siem-ng.fiitacademy.fiit.stuba.sk
+      - ${ELK_PRODUCTION_DOMAIN}
     ip:
-      - 10.0.130.2
+      - ${ELK_PRODUCTION_IP}
   - name: fleet-server
     dns:
       - fleet-server
       - localhost
-      - siem-ng.fiitacademy.fiit.stuba.sk
+      - ${ELK_PRODUCTION_DOMAIN}
     ip:
-      - 10.0.130.2
+      - ${ELK_PRODUCTION_IP}
 EOF
 
     bin/elasticsearch-certutil cert --silent --pem \
