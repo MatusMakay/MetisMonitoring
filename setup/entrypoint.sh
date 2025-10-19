@@ -39,20 +39,23 @@ instances:
     dns:
       - es01
       - localhost
+      - siem-ng.fiitacademy.fiit.stuba.sk
     ip:
-      - 127.0.0.1
+      - 10.0.130.2
   - name: kibana
     dns:
       - kibana
       - localhost
+      - siem-ng.fiitacademy.fiit.stuba.sk
     ip:
-      - 127.0.0.1
+      - 10.0.130.2
   - name: fleet-server
     dns:
       - fleet-server
       - localhost
+      - siem-ng.fiitacademy.fiit.stuba.sk
     ip:
-      - 127.0.0.1
+      - 10.0.130.2
 EOF
 
     bin/elasticsearch-certutil cert --silent --pem \
